@@ -51,6 +51,23 @@ class App extends React.Component {
     );
   };
 
+  // вызывается при первом ренрдере
+  componentDidMount() {
+    const parsedContacts = JSON.parse(localStorage.getItem('contacts'));
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  // вызывается при обновлении DOM
+  componentDidUpdate(prevProps, prevState) {
+    // нельзя использовать setState() -> бесконечный цикл
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     return (
       <Container>
